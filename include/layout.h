@@ -4,6 +4,7 @@
 #include <gtk/gtk.h>
 #include <menu.h>
 #include <toolbar.h>
+#include <spriteslist.h>
 
 GtkWidget* layout_init(GtkWidget*);
 

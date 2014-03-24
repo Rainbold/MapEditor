@@ -3,6 +3,7 @@
 GtkWidget* layout_init(GtkWidget* MainWindow)
 {
 	GtkWidget* pMainBox = NULL;
+	GtkWidget* pTable = NULL;
 
 	// Création de la fenêtre principale de l'application
 	MainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -14,14 +15,13 @@ GtkWidget* layout_init(GtkWidget* MainWindow)
 	pMainBox = gtk_vbox_new(FALSE, 0);
 	gtk_container_add(GTK_CONTAINER(MainWindow), pMainBox);
 
+	// Création de la table
+	pTable = gtk_table_new(4, 4, TRUE);
+		gtk_table_attach( GTK_TABLE(pTable), spriteslist_new(), 0, 1, 0, 4, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+
 	gtk_box_pack_start(GTK_BOX(pMainBox), GTK_WIDGET( menu_new(NULL) ), FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(pMainBox), GTK_WIDGET( toolbar_new(NULL) ), FALSE, FALSE, 0);
- 
-	//Création du bouton Quitter
-	GtkWidget* pButton = NULL;
-	pButton = gtk_button_new_from_stock(GTK_STOCK_QUIT);
-	g_signal_connect(G_OBJECT(pButton), "clicked", G_CALLBACK(gtk_main_quit), NULL);
-	gtk_box_pack_start(GTK_BOX(pMainBox), pButton, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(pMainBox), GTK_WIDGET( pTable ), TRUE, TRUE, 0);
 	
 	return MainWindow;
 }
