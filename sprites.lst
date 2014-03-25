@@ -1,23 +1,25 @@
 # Liste de sprites pour l'éditeur de maps
 
+Empty ./images/empty.png 0x00
+
 - Player
-Bomberman ./images/player_down.png
-Bomberwoman ./images/bomberwoman.png
+Bomberman ./images/player_down.png 0x30
+Bomberwoman ./images/bomberwoman.png 0xA0
 
 - Scenery
-Stone ./images/stone.png
-Tree ./images/tree.png
+Stone ./images/stone.png 0x20
+Tree ./images/tree.png 0x21
 
 - Monstres
-Monster1 ./images/monster_down.png
+Monster1 ./images/monster_down.png 0x60
 
 - Objects
-Key ./images/key.png
-Door ./images/closed_door.png
-Flag ./images/flag.png
+Key ./images/key.png 0x80
+Door ./images/closed_door.png 0x90
+Flag ./images/flag.png 0x10
 
 - Bonus
-RangeDec ./images/bonus_bomb_range_dec.png
-RangeInc ./images/bonus_bomb_range_inc.png
-BombDec ./images/bonus_bomb_nb_dec.png
-BombInc ./images/bonus_bomb_nb_inc.png
+RangeInc ./images/bonus_bomb_range_inc.png 0x50
+RangeDec ./images/bonus_bomb_range_dec.png 0x51
+BombInc ./images/bonus_bomb_nb_inc.png 0x52
+BombDec ./images/bonus_bomb_nb_dec.png 0x53
