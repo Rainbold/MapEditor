@@ -6,11 +6,9 @@
 #include <string.h>
 #include <gtk/gtk.h>
 #include <functions.h>
+#include <callback.h>
 
-#define MAX_SIZE 1000
-#define TAB_SIZE 256
 
-static void map_editor_add_tab(GtkWidget*, const gchar*, char spriteList[TAB_SIZE][3][MAX_SIZE]);
-GtkWidget* map_editor_new();
+GtkNotebook* map_editor_new(char spriteList[MAX_SIZE_TAB_X*MAX_SIZE_TAB_Y][MAX_SIZE]);
 
 #endif

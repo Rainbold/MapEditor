@@ -1,6 +1,7 @@
 #ifndef TOOLBAR_H
 #define TOOLBAR_H
 
+#include <callback.h>
 #include <gtk/gtk.h>
 
 GtkToolbar* toolbar_new(gpointer);

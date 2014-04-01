@@ -6,6 +6,7 @@
 #include <toolbar.h>
 #include <spriteslist.h>
 #include <map_editor.h>
+#include <callback.h>
 
 GtkWidget* layout_init(GtkWidget*);
 
