@@ -6,10 +6,7 @@ GtkToolbar* toolbar_new(gpointer data)
 
 	pToolbar = gtk_toolbar_new();
 
-	map_editor_new_file(NULL, data);
-	map_editor_new_file(NULL, data);
-	map_editor_new_file(NULL, data);
-
+	
 	toolbar_item_new(GTK_TOOLBAR(pToolbar), GTK_STOCK_NEW, G_CALLBACK(map_editor_new_file), data);
 	toolbar_item_new(GTK_TOOLBAR(pToolbar), GTK_STOCK_OPEN, G_CALLBACK(map_editor_open_file), data);
 	toolbar_item_new(GTK_TOOLBAR(pToolbar), GTK_STOCK_SAVE, G_CALLBACK(gtk_main_quit), NULL);
@@ -20,7 +17,7 @@ GtkToolbar* toolbar_new(gpointer data)
 	return GTK_TOOLBAR(pToolbar);
 }
 
-static void toolbar_item_new(GtkToolbar* pToolbar, const gchar* stockId, GCallback callback, gpointer userData)
+void toolbar_item_new(GtkToolbar* pToolbar, const gchar* stockId, GCallback callback, gpointer userData)
 {
 	GtkToolItem* pToolItem = NULL;
 

@@ -8,8 +8,6 @@ GtkMenuBar* menu_new(gpointer userData)
 	GtkWidget* pMenuFile = NULL;
 	GtkWidget* pMenuItemFile = NULL;
 
-	GtkWidget* pMenuHelp = NULL;
-
 	pMenuBar = gtk_menu_bar_new();
 
 	pMenuFile = gtk_menu_new();
@@ -33,7 +31,7 @@ GtkMenuBar* menu_new(gpointer userData)
 	return GTK_MENU_BAR(pMenuBar);
 }
 
-static void menu_item_new(GtkMenu* pMenu, const gchar* title, GCallback callback, gpointer userData)
+void menu_item_new(GtkMenu* pMenu, const gchar* title, GCallback callback, gpointer userData)
 {
 	GtkWidget* pMenuItem = NULL;
 

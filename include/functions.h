@@ -12,5 +12,6 @@
 unsigned int strToHex(const char * s);
 char **str_split (char *s, const char *ct);
 char* map_read_file(const gchar* mapFile, int* sizeX, int* sizeY);
+int map_is_valid_file(const gchar* mapFile);
 
 #endif

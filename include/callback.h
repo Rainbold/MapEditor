@@ -12,12 +12,17 @@ struct data;
 
 void data_set_widget(struct data*, GtkWidget*);
 void data_set_spriteslst(struct data* data, char spritesList[][MAX_SIZE]);
+void data_set_sprite(struct data* data, char* sprite);
+void data_set_code(struct data* data, char);
 void data_set_x(struct data*, int);
 void data_set_y(struct data*, int);
 char** data_get_spriteslst(struct data* data);
+char* data_get_sprite(char code, char spritesList[][MAX_SIZE]);
+char data_get_code(struct data* data);
 void map_editor_new_file(GtkButton* button, gpointer data);
 void map_editor_open_file(GtkButton* button, gpointer data);
-void map_editor_add_tab(GtkNotebook*, const gchar*, char spriteList[MAX_SIZE_TAB_X*MAX_SIZE_TAB_Y][MAX_SIZE]);
+void map_editor_add_tab(GtkNotebook*, const gchar*, char spriteList[MAX_SIZE_TAB_X*MAX_SIZE_TAB_Y][MAX_SIZE], gpointer data);
+void map_editor_replace_sprite(GtkWidget* parent, GdkEventButton* event, gpointer data);
 
 
 #endif

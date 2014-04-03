@@ -21,8 +21,8 @@ GtkWidget* spriteslist_new()
 	GtkWidget* hBox = NULL;
 	GtkAdjustment* spinnerAdjX = NULL;
 	GtkAdjustment* spinnerAdjY = NULL;
-	GtkSpinButton* pSpinButtonX = NULL;
-	GtkSpinButton* pSpinButtonY = NULL;
+	GtkWidget* pSpinButtonX = NULL;
+	GtkWidget* pSpinButtonY = NULL;
 	GtkWidget* pLabelTitle = NULL;
 	GtkWidget* pLabelX = NULL;
 	GtkWidget* pLabelY = NULL;

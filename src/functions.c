@@ -58,6 +58,28 @@ char **str_split (char *s, const char *ct)
    return tab;
 }
 
+int map_is_valid_file(const gchar* mapFile)
+{
+   FILE* f = NULL;
+   unsigned char byte = 0;
+
+   f = fopen(mapFile, "rb");
+
+   if(!f) 
+      return 0;
+
+   if( fread(&byte, 1, sizeof(byte), f) == 0 || byte != 0x6c )
+      return 0;
+   if( fread(&byte, 1, sizeof(byte), f) == 0 || byte != 0x76 )
+      return 0;
+   if( fread(&byte, 1, sizeof(byte), f) == 0 || byte != 0x6c )
+      return 0;
+
+   fclose(f);
+
+   return 1;
+}
+
 char* map_read_file(const gchar* mapFile, int* sizeX, int* sizeY)
 {
    FILE* f = NULL;
@@ -68,15 +90,15 @@ char* map_read_file(const gchar* mapFile, int* sizeX, int* sizeY)
 
    f = fopen(mapFile, "rb");
 
-	if(!f) 
-		exit(1);
+   if(!f) 
+      exit(1);
 
-	if( fread(&byte, 1, sizeof(byte), f) == 0 || byte != 0x6c )
-		exit(1);
-	if( fread(&byte, 1, sizeof(byte), f) == 0 || byte != 0x76 )
-	  	exit(1);
-	if( fread(&byte, 1, sizeof(byte), f) == 0 || byte != 0x6c )
-	  	exit(1);
+   if( fread(&byte, 1, sizeof(byte), f) == 0 || byte != 0x6c )
+      exit(1);
+   if( fread(&byte, 1, sizeof(byte), f) == 0 || byte != 0x76 )
+      exit(1);
+   if( fread(&byte, 1, sizeof(byte), f) == 0 || byte != 0x6c )
+      exit(1);
 
 	if( fread(&byte, 1, sizeof(byte), f) == 0 )
 	  	exit(1);
@@ -95,6 +117,8 @@ char* map_read_file(const gchar* mapFile, int* sizeX, int* sizeY)
 	     	map[CELL(j,i,*sizeX)] = byte;
 	  	}
 	}
+
+   fclose(f);
 
 	return map;
 }
