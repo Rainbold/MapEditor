@@ -63,7 +63,7 @@ GtkWidget* layout_init(GtkWidget* MainWindow)
 
 	// Création de la table
 	pTable = gtk_table_new(4, 4, TRUE);
-		gtk_table_attach( GTK_TABLE(pTable), spriteslist_new(), 0, 1, 0, 4, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+		gtk_table_attach( GTK_TABLE(pTable), spriteslist_new(data), 0, 1, 0, 4, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 		gtk_table_attach( GTK_TABLE(pTable), GTK_WIDGET(pNotebookMap), 1, 4, 0, 4, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 
 

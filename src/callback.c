@@ -248,3 +248,18 @@ void map_editor_replace_sprite(GtkWidget* parent, GdkEventButton* event, gpointe
 					gtk_widget_set_events (parent, GDK_BUTTON_PRESS_MASK);
     				g_signal_connect (parent, "button_press_event", G_CALLBACK(map_editor_replace_sprite), data);
 }
+
+void spriteslst_change_sprite(GtkTreeView *treeView, gpointer data)
+{
+	struct data* data2 = data;
+	GtkTreePath* path[256];
+	GtkTreeViewColumn** col = NULL;
+	char** sprlst = data_get_spriteslst(data);
+
+
+//atoi(gtk_tree_path_to_string(path[0]))
+	gtk_tree_view_get_cursor(treeView,path,col);
+	data_set_code(data, strToHex(((char (*)[MAX_SIZE])data_get_spriteslst(data))[CELL(atoi(gtk_tree_path_to_string(path[0])), 2, MAX_SIZE_TAB_X)]));
+
+	printf("COUCOU\n");
+}

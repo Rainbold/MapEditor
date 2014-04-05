@@ -5,7 +5,6 @@ GtkToolbar* toolbar_new(gpointer data)
 	GtkWidget* pToolbar = NULL;
 
 	pToolbar = gtk_toolbar_new();
-
 	
 	toolbar_item_new(GTK_TOOLBAR(pToolbar), GTK_STOCK_NEW, G_CALLBACK(map_editor_new_file), data);
 	toolbar_item_new(GTK_TOOLBAR(pToolbar), GTK_STOCK_OPEN, G_CALLBACK(map_editor_open_file), data);

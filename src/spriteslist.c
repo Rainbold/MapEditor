@@ -8,9 +8,9 @@ enum {
 
 #define MAX_SIZE 1000
 
-GtkWidget* spriteslist_new()
+GtkWidget* spriteslist_new(gpointer data)
 {
-	GtkWidget* pListView = NULL;
+	GtkTreeView* pListView = NULL;
 	GtkTreeViewColumn* pColumn = NULL;
 	GtkListStore* pSpriteList = NULL;
 	GtkCellRenderer* pCellRenderer = NULL;
@@ -66,9 +66,11 @@ GtkWidget* spriteslist_new()
 
 	g_free(sText);
 
+
 	// Création de la vue
 	pListView = gtk_tree_view_new_with_model(GTK_TREE_MODEL(pSpriteList));
 
+	g_signal_connect(G_OBJECT(pListView), "cursor-changed", G_CALLBACK(spriteslst_change_sprite), data);
 	// Création de la première colonne
 	pCellRenderer = gtk_cell_renderer_pixbuf_new();
 	pColumn = gtk_tree_view_column_new_with_attributes("Images", pCellRenderer, "pixbuf", IMG_COLUMN, NULL);

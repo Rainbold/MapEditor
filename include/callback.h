@@ -23,6 +23,7 @@ void map_editor_new_file(GtkButton* button, gpointer data);
 void map_editor_open_file(GtkButton* button, gpointer data);
 void map_editor_add_tab(GtkNotebook*, const gchar*, char spriteList[MAX_SIZE_TAB_X*MAX_SIZE_TAB_Y][MAX_SIZE], gpointer data);
 void map_editor_replace_sprite(GtkWidget* parent, GdkEventButton* event, gpointer data);
+void spriteslst_change_sprite(GtkTreeView*, gpointer);
 
 
 #endif
