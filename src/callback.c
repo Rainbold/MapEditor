@@ -1,19 +1,6 @@
 #include <callback.h>
+#include <functions.h>
 #include <assert.h>
-
-struct data
-{
-	char code;
-	int x;
-	int y;
-	int upX;
-	int upY;
-	gboolean save;
-	gboolean file;
-	char** spritesList;
-	GtkWidget* widget;
-	char mapSprites[MAX_SIZE_TAB_X];
-};
 
 struct data* data_init()
 {
@@ -41,6 +28,18 @@ GtkWidget* data_get_widget(struct data* data)
 	return data->widget;
 }
 
+void data_set_table(struct data* data, GtkWidget* widget)
+{
+	assert(data);
+	data->table = widget;
+}
+
+GtkWidget* data_get_table(struct data* data)
+{
+	assert(data);
+	return data->table;
+}
+
 void data_set_spriteslst(struct data* data, char spritesList[][MAX_SIZE])
 {
 	assert(data);
@@ -66,13 +65,13 @@ char* data_get_sprite(char code, char spritesList[][MAX_SIZE])
 	return "";
 }
 
-void data_set_code(struct data* data, char code)
+void data_set_code(struct data* data, unsigned char code)
 {
 	assert(data);
 	data->code = code;
 }
 
-char data_get_code(struct data* data)
+unsigned char data_get_code(struct data* data)
 {
 	assert(data);
 	return data->code;
@@ -117,6 +116,7 @@ gboolean data_get_save(struct data* data)
 void data_set_file(struct data* data, gboolean file)
 {
 	assert(data);
+	printf("%s\n", data->mapSprites);
 	data->file = file;
 }
 
@@ -153,14 +153,24 @@ int data_get_up_y(struct data* data)
 void data_set_map_sprites(struct data* data, char mapSprites[MAX_SIZE_TAB_X])
 {
 	assert(data);
-	strcpy(data->mapSprites, mapSprites);
+	for(int i=0; i<MAX_SIZE_TAB_X; i++)
+	{
+		data->mapSprites[i] = mapSprites[i];
+	}
 }
 
-// void data_set_cell_type(struct data* data, char type, int x, int y)
-// {
-// 	assert(data);
-// 	data->mapSprites[ CELL(x,y,data->x) ] = type;
-// }
+char* data_get_map_sprites(struct data* data)
+{
+	assert(data);
+	return data->mapSprites;
+}
+
+void data_set_cell_type(struct data* data, char type, int x, int y)
+{
+	assert(data);
+	data->mapSprites[ CELL(x,y,data->x) ] = type;
+	printf("La chaine %d %02x\n", CELL(x,y,data->x), data->mapSprites[ CELL(x,y,data->x) ]);
+}
 
 // char data_get_cell_type(struct data* data, int x, int y)
 // {
@@ -170,7 +180,6 @@ void data_set_map_sprites(struct data* data, char mapSprites[MAX_SIZE_TAB_X])
 
 void map_editor_new_file(GtkButton* button, gpointer data)
 {
-	GtkWidget* pTabLabel = NULL;
 	GtkWidget* pTable = NULL;
 	GtkWidget* pImage = NULL;
 	GtkWidget* pAlignment = NULL;
@@ -191,7 +200,6 @@ void map_editor_new_file(GtkButton* button, gpointer data)
 		GtkWidget* pSpinButtonY = NULL;
 		GtkWidget* pLabelX = NULL;
 		GtkWidget* pLabelY = NULL;
-	    const gchar* sNom;
 	 
 	    /* Création de la boite de dialogue */
 	    /* 1 bouton Valider */
@@ -263,7 +271,7 @@ void map_editor_new_file(GtkButton* button, gpointer data)
 					gtk_widget_destroy(GTK_WIDGET(iter->data));
 				g_list_free(children);
 
-				gtk_scrolled_window_add_with_viewport(GTK_CONTAINER(data_get_widget(data)), pAlignment);
+				gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(data_get_widget(data)), pAlignment);
 
 				gtk_widget_show(pTable);
 				gtk_widget_show(pAlignment);
@@ -280,49 +288,8 @@ void map_editor_new_file(GtkButton* button, gpointer data)
 	}
 }
 
-void map_editor_open_file(GtkButton* button, gpointer data)
-{
-	GtkWidget *pDialog = NULL;
-
-	if(data_get_save(data))
-		printf("Il faut sauvegarder le fichier\n");
-	else {
-	  	pDialog = gtk_file_chooser_dialog_new ("Ouvrir un fichier", NULL, GTK_FILE_CHOOSER_ACTION_OPEN, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
-	  	gtk_widget_show(pDialog);
-
-	  	if (gtk_dialog_run(GTK_DIALOG (pDialog)) == GTK_RESPONSE_ACCEPT)
-	  	{
-	  		gchar* fileName = NULL;
-	  		// GtkWidget* toplevel = gtk_widget_get_toplevel(GTK_WIDGET(button));
-	  		GtkWidget* pErrorMessage = NULL;
-
-		    fileName = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (pDialog));
-
-		    if(map_is_valid_file(fileName)) {
-	  			map_editor_open_file_aux(GTK_NOTEBOOK(data_get_widget(data)), fileName, (char (*)[MAX_SIZE])data_get_spriteslst(data), data);
-		    }
-	  		else {
-	  			pErrorMessage = gtk_message_dialog_new (GTK_WINDOW(pDialog), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, "Invalid file.");
-	  			gtk_widget_show(pErrorMessage);
-				gtk_dialog_run (GTK_DIALOG (pErrorMessage));
-				gtk_widget_destroy (pErrorMessage);
-	  		}
-	  		
-		    g_free (fileName), fileName = NULL;
-	  		gtk_widget_destroy (pDialog);
-
-	  	}
-
-	  	if (gtk_dialog_run(GTK_DIALOG (pDialog)) == GTK_RESPONSE_CANCEL)
-	  	{
-	  		gtk_widget_destroy (pDialog);
-	  	}
-	}
-}
-
 void map_editor_open_file_aux(GtkNotebook* pNotebookMap, const gchar* f, char spriteList[MAX_SIZE_TAB_X*MAX_SIZE_TAB_Y][MAX_SIZE], gpointer data)
 {
-	GtkWidget* pTabLabel = NULL;
 	GtkWidget* pTable = NULL;
 	GtkWidget* pImage = NULL;
 	GtkWidget* pAlignment = NULL;
@@ -380,10 +347,50 @@ void map_editor_open_file_aux(GtkNotebook* pNotebookMap, const gchar* f, char sp
 		gtk_widget_destroy(GTK_WIDGET(iter->data));
 	g_list_free(children);
 
-	gtk_scrolled_window_add_with_viewport(GTK_CONTAINER(data_get_widget(data)), pAlignment);
+	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(data_get_widget(data)), pAlignment);
 
 	gtk_widget_show(pTable);
 	gtk_widget_show(pAlignment);
+}
+
+void map_editor_open_file(GtkButton* button, gpointer data)
+{
+	GtkWidget *pDialog = NULL;
+
+	if(data_get_save(data))
+		printf("Il faut sauvegarder le fichier\n");
+	else {
+	  	pDialog = gtk_file_chooser_dialog_new ("Ouvrir un fichier", NULL, GTK_FILE_CHOOSER_ACTION_OPEN, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
+	  	gtk_widget_show(pDialog);
+
+	  	if (gtk_dialog_run(GTK_DIALOG (pDialog)) == GTK_RESPONSE_ACCEPT)
+	  	{
+	  		gchar* fileName = NULL;
+	  		// GtkWidget* toplevel = gtk_widget_get_toplevel(GTK_WIDGET(button));
+	  		GtkWidget* pErrorMessage = NULL;
+
+		    fileName = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (pDialog));
+
+		    if(map_is_valid_file(fileName)) {
+	  			map_editor_open_file_aux(GTK_NOTEBOOK(data_get_widget(data)), fileName, (char (*)[MAX_SIZE])data_get_spriteslst(data), data);
+		    }
+	  		else {
+	  			pErrorMessage = gtk_message_dialog_new (GTK_WINDOW(pDialog), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, "Invalid file.");
+	  			gtk_widget_show(pErrorMessage);
+				gtk_dialog_run (GTK_DIALOG (pErrorMessage));
+				gtk_widget_destroy (pErrorMessage);
+	  		}
+	  		
+		    g_free (fileName), fileName = NULL;
+	  		gtk_widget_destroy (pDialog);
+
+	  	}
+
+	  	if (gtk_dialog_run(GTK_DIALOG (pDialog)) == GTK_RESPONSE_CANCEL)
+	  	{
+	  		gtk_widget_destroy (pDialog);
+	  	}
+	}
 }
 
 void map_editor_replace_sprite(GtkWidget* parent, GdkEventButton* event, gpointer data)
@@ -393,6 +400,21 @@ void map_editor_replace_sprite(GtkWidget* parent, GdkEventButton* event, gpointe
 	GList *children, *iter;
 
 	assert(data);
+
+	gint wx, wy;
+	gint cx, cy;
+	children = gtk_container_get_children(GTK_CONTAINER(data_get_widget(data)));
+	children = gtk_container_get_children(GTK_CONTAINER(children->data));
+	children = gtk_container_get_children(GTK_CONTAINER(children->data));
+	gtk_widget_translate_coordinates(GTK_WIDGET(children->data), gtk_widget_get_toplevel(parent), 0, 0, &wx, &wy);
+	gtk_widget_translate_coordinates(parent, gtk_widget_get_toplevel(parent), 0, 0, &cx, &cy);
+	
+	//data_set_cell_type(data, data_get_code(data), (cx-wx)/40, (cy-wy)/40);
+	char mapS[MAX_SIZE_TAB_X] = ""; 
+	for(int i=0; i<MAX_SIZE_TAB_X; i++)
+		mapS[i] = data_get_map_sprites(data)[i];
+	mapS[CELL((cx-wx)/40, (cy-wy)/40, data_get_x(data))] = data_get_code(data);
+	data_set_map_sprites(data, mapS);
 
 	if(!data_get_save(data)) {
 		const int len = strlen( gtk_window_get_title(GTK_WINDOW(gtk_widget_get_toplevel( data_get_widget(data)))) );
@@ -436,15 +458,16 @@ void map_editor_change_size(GtkButton* button, gpointer data)
 	int sizeX = data_get_up_x(data);
 	int sizeY = data_get_up_y(data);
 
-	GtkWidget* pTabLabel = NULL;
 	GtkWidget* pTable = NULL;
 	GtkWidget* pImage = NULL;
 	GtkWidget* pAlignment = NULL;
 	GtkWidget* pEventBox = NULL;
 	gchar* img;
+	char mapS[MAX_SIZE_TAB_X] = ""; 
 
 	if(data_get_file(data))
 	{
+		map_resize_var(data, data_get_x(data), data_get_y(data), sizeX, sizeY);
 		pAlignment = gtk_alignment_new(0.5, 0.5, 0, 0);
 		pTable = gtk_table_new(sizeX, sizeY, TRUE);
 		for(int i=0; i<sizeY; i++)
@@ -452,6 +475,18 @@ void map_editor_change_size(GtkButton* button, gpointer data)
 			for(int j=0; j<sizeX; j++)
 			{
 				img = "./images/empty.png";
+				
+				for(int k=0; k<MAX_SIZE_TAB_X; k++)
+				{
+					if(!strcmp(((char(*)[MAX_SIZE])data_get_spriteslst(data))[CELL(k, 0, MAX_SIZE_TAB_X)], ""))
+						break;
+					if( data_get_map_sprites(data)[CELL(j,i,sizeX)] == strToHex(((char(*)[MAX_SIZE])data_get_spriteslst(data))[CELL(k, 2, MAX_SIZE_TAB_X)]) )
+					{
+						img = ((char(*)[MAX_SIZE])data_get_spriteslst(data))[CELL(k, 1, MAX_SIZE_TAB_X)];
+						break;
+					}
+            	}
+
 				pEventBox = gtk_event_box_new();
 				pImage = gtk_image_new_from_file(img);
 					gtk_container_add(GTK_CONTAINER(pEventBox), pImage);
@@ -472,7 +507,10 @@ void map_editor_change_size(GtkButton* button, gpointer data)
 			gtk_widget_destroy(GTK_WIDGET(iter->data));
 		g_list_free(children);
 
-		gtk_scrolled_window_add_with_viewport(GTK_CONTAINER(data_get_widget(data)), pAlignment);
+		data_set_x(data, sizeX);
+		data_set_y(data, sizeY);
+
+		gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(data_get_widget(data)), pAlignment);
 
 		gtk_widget_show(pTable);
 		gtk_widget_show(pAlignment);

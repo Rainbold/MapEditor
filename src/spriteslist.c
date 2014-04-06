@@ -10,7 +10,7 @@ enum {
 
 GtkWidget* spriteslist_new(gpointer data)
 {
-	GtkTreeView* pListView = NULL;
+	GtkWidget* pListView = NULL;
 	GtkTreeViewColumn* pColumn = NULL;
 	GtkListStore* pSpriteList = NULL;
 	GtkCellRenderer* pCellRenderer = NULL;

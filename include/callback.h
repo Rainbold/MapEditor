@@ -2,14 +2,28 @@
 #define CALLBACK_H
 
 #include <gtk/gtk.h>
-#include <functions.h>
 
 #define MAX_SIZE 1000
-#define MAX_SIZE_TAB_X 30*30
+#define MAX_SIZE_TAB_X 50*50
 #define MAX_SIZE_TAB_Y 3
 
-struct data;
-struct upSize;
+#define CELL(x,y,sizeX) (x +  sizeX * y)
+#define MIN(a,b) ((a) < (b) ? a : b)
+
+struct data
+{
+	unsigned char code;
+	int x;
+	int y;
+	int upX;
+	int upY;
+	gboolean save;
+	gboolean file;
+	char** spritesList;
+	GtkWidget* widget;
+	GtkWidget* table;
+	char mapSprites[MAX_SIZE_TAB_X];
+};
 
 struct data* data_init();
 
@@ -17,6 +31,7 @@ void data_set_main_window(struct data*, GtkWidget*);
 GtkWidget* data_get_main_window(struct data*);
 
 void data_set_widget(struct data*, GtkWidget*);
+void data_set_table(struct data*, GtkWidget*);
 
 void data_set_spriteslst(struct data* data, char spritesList[][MAX_SIZE]);
 char** data_get_spriteslst(struct data* data);
@@ -24,8 +39,8 @@ char** data_get_spriteslst(struct data* data);
 void data_set_sprite(struct data* data, char* sprite);
 char* data_get_sprite(char code, char spritesList[][MAX_SIZE]);
 
-void data_set_code(struct data* data, char);
-char data_get_code(struct data* data);
+void data_set_code(struct data* data, char unsigned);
+unsigned char data_get_code(struct data* data);
 
 void data_set_x(struct data*, int);
 void data_set_y(struct data*, int);
@@ -43,6 +58,7 @@ void data_set_cell_type(struct data*, char type, int x, int y);
 char data_get_cell_type(struct data*, int x, int y);
 
 void data_set_map_sprites(struct data*, char mapSprites[MAX_SIZE_TAB_X]);
+char* data_get_map_sprites(struct data* data);
 
 void map_editor_new_file(GtkButton* button, gpointer data);
 void map_editor_open_file(GtkButton* button, gpointer data);

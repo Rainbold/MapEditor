@@ -60,21 +60,22 @@ GtkWidget* layout_init(GtkWidget* MainWindow)
 
 
 	char mapSprites[MAX_SIZE_TAB_X] = "";
-	struct data* data;
-		data_set_widget(&data, pMap);
-		data_set_spriteslst(&data, spriteList);
+	struct data data;
+		data_set_widget(&data, GTK_WIDGET(pMap));
+		data_set_spriteslst(&data, (char(*)[MAX_SIZE])spriteList);
 		data_set_code(&data, 0x30);
 		data_set_x(&data, 12);
 		data_set_y(&data, 12);
 		data_set_up_x(&data, 15);
 		data_set_up_y(&data, 15);
-		data_set_map_sprites(data, mapSprites);
+		data_set_map_sprites(&data, mapSprites);
 		data_set_save(&data, FALSE);
 		data_set_file(&data, FALSE);
 
 
 	// Table creation
 	pTable = gtk_table_new(4, 4, TRUE);
+		data_set_table(&data, GTK_WIDGET(pTable));
 		gtk_table_attach( GTK_TABLE(pTable), spriteslist_new(&data), 0, 1, 0, 4, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 		gtk_table_attach( GTK_TABLE(pTable), GTK_WIDGET(pMap), 1, 4, 0, 4, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 	
