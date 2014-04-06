@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 #define CELL(x,y,sizeX) (x +  sizeX * y)
 
 unsigned int strToHex(const char * s);

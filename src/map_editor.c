@@ -1,11 +1,12 @@
 #include <map_editor.h>
 
-GtkNotebook* map_editor_new(char spriteList[MAX_SIZE_TAB_X*MAX_SIZE_TAB_Y][MAX_SIZE])
+GtkWidget* map_editor_new(char spriteList[MAX_SIZE_TAB_X*MAX_SIZE_TAB_Y][MAX_SIZE])
 {
-	GtkWidget* pNotebookMap = NULL;
+	GtkWidget* pMap = NULL;
 
-	pNotebookMap = gtk_notebook_new();
+	pMap = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(pMap), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-	return GTK_NOTEBOOK(pNotebookMap);
+	return pMap;
 }
 

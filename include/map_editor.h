@@ -9,6 +9,6 @@
 #include <callback.h>
 
 
-GtkNotebook* map_editor_new(char spriteList[MAX_SIZE_TAB_X*MAX_SIZE_TAB_Y][MAX_SIZE]);
+GtkWidget* map_editor_new(char spriteList[MAX_SIZE_TAB_X*MAX_SIZE_TAB_Y][MAX_SIZE]);
 
 #endif

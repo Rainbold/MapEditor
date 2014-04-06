@@ -7,9 +7,10 @@ int main(int argc, char* argv[])
 {
 	GtkWidget* MainWindow = NULL;
 
-	// Initialisation de GTK+
+	// GTK+ Initialization
 	gtk_init(&argc, &argv);
 
+	// Initialization of the main window
 	MainWindow = layout_init(MainWindow);
 
 	gtk_widget_show_all(MainWindow);
