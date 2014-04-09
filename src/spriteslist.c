@@ -90,9 +90,9 @@ GtkWidget* spriteslist_new(gpointer data)
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(pScrollbar), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gtk_container_add(GTK_CONTAINER(pScrollbar), pListView);
 
-	spinnerAdjX = (GtkAdjustment*) gtk_adjustment_new(50.0, 0.0, 100.0, 1.0, 5.0, 5.0);
+	spinnerAdjX = (GtkAdjustment*) gtk_adjustment_new(15.0, 0.0, 50.0, 1.0, 5.0, 5.0);
 		pSpinButtonX = gtk_spin_button_new(spinnerAdjX, 1.0, 0);
-	spinnerAdjY = (GtkAdjustment*) gtk_adjustment_new(50.0, 0.0, 100.0, 1.0, 5.0, 5.0);
+	spinnerAdjY = (GtkAdjustment*) gtk_adjustment_new(15.0, 0.0, 50.0, 1.0, 5.0, 5.0);
 		pSpinButtonY = gtk_spin_button_new(spinnerAdjY, 1.0, 0);
 
 	pLabelTitle = gtk_label_new("Map size");
@@ -100,7 +100,15 @@ GtkWidget* spriteslist_new(gpointer data)
 	pLabelY = gtk_label_new("Y ");
 
 	pHSeparator = gtk_hseparator_new();
+
 	pButton = gtk_button_new_with_label("Update");
+		data_set_up_x(data, 15);
+		data_set_up_y(data, 15);
+
+
+	g_signal_connect(G_OBJECT(pSpinButtonX), "value-changed", G_CALLBACK(map_editor_change_size_x), data);
+	g_signal_connect(G_OBJECT(pSpinButtonY), "value-changed", G_CALLBACK(map_editor_change_size_y), data);
+	g_signal_connect(G_OBJECT(pButton), "clicked", G_CALLBACK(map_editor_change_size), data);
 
 	vBox = gtk_vbox_new(FALSE, 0);
 	gtk_box_set_homogeneous(GTK_BOX(vBox), FALSE);

@@ -122,3 +122,22 @@ char* map_read_file(const gchar* mapFile, int* sizeX, int* sizeY)
 
 	return map;
 }
+
+char* map_resize_var(char mapSprites[MAX_SIZE_TAB_X], int x, int y, int xn, int yn)
+{
+   int i, j;
+
+   char mapSpritesNew[MAX_SIZE_TAB_X] = "";
+   for(i=0; i<xn; i++)
+   {
+      for(j=0; j<yn; j++)
+      {
+         if(i<x && j<y)
+            mapSpritesNew[CELL(i,j,xn)] = mapSprites[CELL(i,j,x)];
+         else
+            mapSpritesNew[CELL(i,j,x)] = 0x00;
+      }
+   }
+
+   return mapSpritesNew;
+}

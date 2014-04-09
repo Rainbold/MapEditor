@@ -3,14 +3,31 @@
 
 struct data
 {
-	GtkWidget* widget;
-	char** spritesList;
 	char code;
 	int x;
 	int y;
-	struct filesList* filesList;
+	int upX;
+	int upY;
 	gboolean save;
+	gboolean file;
+	char** spritesList;
+	GtkWidget* widget;
+	char mapSprites[MAX_SIZE_TAB_X];
 };
+
+struct data* data_init()
+{
+	struct data* data = malloc(sizeof(struct data*));
+	data->code = 0x30;
+	data->x = 12;
+	data->y = 12;
+	data->upX = 12;
+	data->upY = 12;
+	data->save = FALSE;
+	data->file = FALSE;
+
+	return data;
+}
 
 void data_set_widget(struct data* data, GtkWidget* widget)
 {
@@ -97,6 +114,59 @@ gboolean data_get_save(struct data* data)
 	return data->save;
 }
 
+void data_set_file(struct data* data, gboolean file)
+{
+	assert(data);
+	data->file = file;
+}
+
+gboolean data_get_file(struct data* data)
+{
+	assert(data);
+	return data->file;
+}
+
+void data_set_up_x(struct data* data, int x)
+{
+	assert(data);
+	data->upX = x;
+}
+
+int data_get_up_x(struct data* data)
+{
+	assert(data);
+	return data->upX;
+}
+
+void data_set_up_y(struct data* data, int y)
+{
+	assert(data);
+	data->upY = y;
+}
+
+int data_get_up_y(struct data* data)
+{
+	assert(data);
+	return data->upY;
+}
+
+void data_set_map_sprites(struct data* data, char mapSprites[MAX_SIZE_TAB_X])
+{
+	assert(data);
+	strcpy(data->mapSprites, mapSprites);
+}
+
+// void data_set_cell_type(struct data* data, char type, int x, int y)
+// {
+// 	assert(data);
+// 	data->mapSprites[ CELL(x,y,data->x) ] = type;
+// }
+
+// char data_get_cell_type(struct data* data, int x, int y)
+// {
+// 	assert(data);
+// 	return data->mapSprites[ CELL(x,y,data->x) ];
+// }
 
 void map_editor_new_file(GtkButton* button, gpointer data)
 {
@@ -108,12 +178,11 @@ void map_editor_new_file(GtkButton* button, gpointer data)
 	gchar* img;
 
 	if(data_get_save(data)) {
-
+		printf("TEST\n");
 	}
 	else {
-
-		int sizeX = data_get_x(data); 
-		int sizeY = data_get_y(data);
+		int sizeX = 0;
+		int sizeY = 0;
 
 		GtkWidget* pBoite;
 		GtkAdjustment* spinnerAdjX = NULL;
@@ -152,14 +221,19 @@ void map_editor_new_file(GtkButton* button, gpointer data)
 	    gtk_widget_show_all(GTK_DIALOG(pBoite)->vbox);
 
 
-
 		/* On lance la boite de dialogue et on récupéré la réponse */
 	    switch (gtk_dialog_run(GTK_DIALOG(pBoite)))
 	    {
 	        /* L utilisateur valide */
 	        case GTK_RESPONSE_OK:
-	        	sizeX = gtk_spin_button_get_value_as_int(pSpinButtonX);
-	        	sizeY = gtk_spin_button_get_value_as_int(pSpinButtonY);
+	        	data_set_file(data, TRUE);
+
+	        	sizeX = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(pSpinButtonX));
+	        	sizeY = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(pSpinButtonY));
+
+	        	data_set_x(data, sizeX);
+	        	data_set_y(data, sizeY);
+
 	        	gtk_window_set_title(GTK_WINDOW(gtk_widget_get_toplevel( data_get_widget(data) )), "Map Editor - Untitled_map.lvl");
 	    
 					pAlignment = gtk_alignment_new(0.5, 0.5, 0, 0);
@@ -340,6 +414,69 @@ void map_editor_replace_sprite(GtkWidget* parent, GdkEventButton* event, gpointe
 					gtk_widget_show(parent);
 					gtk_widget_set_events (parent, GDK_BUTTON_PRESS_MASK);
     				g_signal_connect (parent, "button_press_event", G_CALLBACK(map_editor_replace_sprite), data);
+}
+
+
+void map_editor_change_size_x(GtkSpinButton* spinButton, gpointer data)
+{
+	assert(data);
+	data_set_up_x(data, (int)gtk_spin_button_get_value(spinButton));
+}
+
+void map_editor_change_size_y(GtkSpinButton* spinButton, gpointer data)
+{
+	assert(data);
+	data_set_up_y(data, (int)gtk_spin_button_get_value(spinButton));
+}
+
+void map_editor_change_size(GtkButton* button, gpointer data)
+{
+	assert(data);
+
+	int sizeX = data_get_up_x(data);
+	int sizeY = data_get_up_y(data);
+
+	GtkWidget* pTabLabel = NULL;
+	GtkWidget* pTable = NULL;
+	GtkWidget* pImage = NULL;
+	GtkWidget* pAlignment = NULL;
+	GtkWidget* pEventBox = NULL;
+	gchar* img;
+
+	if(data_get_file(data))
+	{
+		pAlignment = gtk_alignment_new(0.5, 0.5, 0, 0);
+		pTable = gtk_table_new(sizeX, sizeY, TRUE);
+		for(int i=0; i<sizeY; i++)
+		{
+			for(int j=0; j<sizeX; j++)
+			{
+				img = "./images/empty.png";
+				pEventBox = gtk_event_box_new();
+				pImage = gtk_image_new_from_file(img);
+					gtk_container_add(GTK_CONTAINER(pEventBox), pImage);
+					gtk_widget_show(pImage);
+					gtk_widget_show(pEventBox);
+					gtk_widget_set_events (pEventBox, GDK_BUTTON_PRESS_MASK);
+					g_signal_connect (pEventBox, "button_press_event", G_CALLBACK(map_editor_replace_sprite), data);
+					gtk_table_attach( GTK_TABLE(pTable), pEventBox, i, i+1, j, j+1, FALSE, FALSE, 0, 0);
+			}
+		}
+		gtk_container_add(GTK_CONTAINER(pAlignment), pTable);
+
+
+		GList *children, *iter;
+
+		children = gtk_container_get_children(GTK_CONTAINER(data_get_widget(data)));
+		for(iter = children; iter != NULL; iter = g_list_next(iter))
+			gtk_widget_destroy(GTK_WIDGET(iter->data));
+		g_list_free(children);
+
+		gtk_scrolled_window_add_with_viewport(GTK_CONTAINER(data_get_widget(data)), pAlignment);
+
+		gtk_widget_show(pTable);
+		gtk_widget_show(pAlignment);
+	}
 }
 
 void spriteslst_change_sprite(GtkTreeView *treeView, gpointer data)

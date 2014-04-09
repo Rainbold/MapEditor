@@ -1,6 +1,5 @@
 #include <menu.h>
 
-
 GtkMenuBar* menu_new(gpointer userData)
 {
 	GtkWidget* pMenuBar = NULL;

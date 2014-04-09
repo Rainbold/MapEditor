@@ -58,23 +58,30 @@ GtkWidget* layout_init(GtkWidget* MainWindow)
 
 	pMap = map_editor_new(spriteList);
 
-	struct data* data = malloc(sizeof(struct data*));
-		data_set_widget(data, pMap);
-		data_set_spriteslst(data, spriteList);
-		data_set_code(data, 0x30);
-		data_set_x(data, 12);
-		data_set_y(data, 12);
-		data_set_save(data, FALSE);
+
+	char mapSprites[MAX_SIZE_TAB_X] = "";
+	struct data* data;
+		data_set_widget(&data, pMap);
+		data_set_spriteslst(&data, spriteList);
+		data_set_code(&data, 0x30);
+		data_set_x(&data, 12);
+		data_set_y(&data, 12);
+		data_set_up_x(&data, 15);
+		data_set_up_y(&data, 15);
+		data_set_map_sprites(data, mapSprites);
+		data_set_save(&data, FALSE);
+		data_set_file(&data, FALSE);
+
 
 	// Table creation
 	pTable = gtk_table_new(4, 4, TRUE);
-		gtk_table_attach( GTK_TABLE(pTable), spriteslist_new(data), 0, 1, 0, 4, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+		gtk_table_attach( GTK_TABLE(pTable), spriteslist_new(&data), 0, 1, 0, 4, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 		gtk_table_attach( GTK_TABLE(pTable), GTK_WIDGET(pMap), 1, 4, 0, 4, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-
-	// We then add the menu, the toolbar and the table to the main container
-	gtk_box_pack_start(GTK_BOX(pMainBox), GTK_WIDGET( menu_new(data) ), FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(pMainBox), GTK_WIDGET( toolbar_new(data) ), FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(pMainBox), GTK_WIDGET( pTable ), TRUE, TRUE, 0);
 	
+	// We then add the menu, the toolbar and the table to the main container
+	gtk_box_pack_start(GTK_BOX(pMainBox), GTK_WIDGET( menu_new(&data) ), FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(pMainBox), GTK_WIDGET( toolbar_new(&data) ), FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(pMainBox), GTK_WIDGET( pTable ), TRUE, TRUE, 0);
+
 	return MainWindow;
 }
