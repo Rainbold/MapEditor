@@ -6,21 +6,16 @@ unsigned char strToHex(const char * s)
 {
 	unsigned char result = 0;
 	char c;
-   char* sOr = s;
-   int i=2;
  	
  	if ('0' == *s && 'x' == *(s+1)) { 
-      printf("%s\n", s);
       s+=2;
-      while (*s && i<=4){
+      while (*s){
          result = result << 4;
             if (c=(*s-'0'),(c>=0 && c <=9)) result|=c;
             else if (c=(*s-'A'),(c>=0 && c <=5)) result|=(c+10);
             else if (c=(*s-'a'),(c>=0 && c <=5)) result|=(c+10);
             else break;
-            printf("%d %c\n", c, *s);
 		   	++s;
-            i++;
   		}
  	}
 
@@ -87,7 +82,7 @@ int map_is_valid_file(const gchar* mapFile)
    return 1;
 }
 
-char* map_read_file(const gchar* mapFile, int* sizeX, int* sizeY)
+unsigned char* map_read_file(const gchar* mapFile, int* sizeX, int* sizeY)
 {
    FILE* f = NULL;
    unsigned char byte = 0;
@@ -115,7 +110,7 @@ char* map_read_file(const gchar* mapFile, int* sizeX, int* sizeY)
 	  	exit(1);
 	*sizeY = byte;
 
-	char* map = malloc(sizeof(char)* (*sizeX) * (*sizeY) );
+	unsigned char* map = malloc(sizeof(char)* (*sizeX) * (*sizeY) );
 
 	for(i=0; i<*sizeY; i++) {
 	  	for(j=0; j<*sizeX; j++) {
@@ -136,21 +131,9 @@ void map_resize_var(struct data* data, int x, int y, int xn, int yn)
 
    unsigned char mapSpritesNew[MAX_SIZE_TAB_X] = "";
    unsigned char mapSprites[MAX_SIZE_TAB_X] = ""; 
-   // for(int i=0; i<MAX_SIZE_TAB_X; i++)
-   //    printf("%02x ", data_get_map_sprites(data)[i]);
-   for(i=0; i<x; i++)
-   {
-      for(j=0; j<y; j++)
-      {
-         printf("%02x ", data_get_map_sprites(data)[CELL(i,j,x)]);
-      }
-      printf("\n");
-   }
+
    for(int i=0; i<MAX_SIZE_TAB_X; i++)
       mapSprites[i] = data_get_map_sprites(data)[i];
-
-      printf("\n");
-      printf("%d %d %d %d\n", x, y, xn, yn);
 
    for(i=0; i<yn; i++)
    {
@@ -161,15 +144,11 @@ void map_resize_var(struct data* data, int x, int y, int xn, int yn)
          else
             mapSpritesNew[CELL(j,i,xn)] = 0x00;
 
-         printf("%02x ", mapSpritesNew[CELL(j,i,xn)]);
       }
-      printf("\n");
    }
 
    data_set_x(data, xn);
    data_set_y(data, yn);
 
    data_set_map_sprites(data, mapSpritesNew);
-   // for(int i=0; i<MAX_SIZE_TAB_X; i++)
-   //    printf("%02x ", data_get_map_sprites(data)[i]);
 }

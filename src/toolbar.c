@@ -8,10 +8,10 @@ GtkToolbar* toolbar_new(gpointer data)
 	
 	toolbar_item_new(GTK_TOOLBAR(pToolbar), GTK_STOCK_NEW, G_CALLBACK(map_editor_new_file), data);
 	toolbar_item_new(GTK_TOOLBAR(pToolbar), GTK_STOCK_OPEN, G_CALLBACK(map_editor_open_file), data);
-	toolbar_item_new(GTK_TOOLBAR(pToolbar), GTK_STOCK_SAVE, G_CALLBACK(gtk_main_quit), NULL);
-	toolbar_item_new(GTK_TOOLBAR(pToolbar), GTK_STOCK_SAVE_AS, G_CALLBACK(gtk_main_quit), NULL);
-	toolbar_item_new(GTK_TOOLBAR(pToolbar), GTK_STOCK_CLOSE, G_CALLBACK(gtk_main_quit), NULL);
-	toolbar_item_new(GTK_TOOLBAR(pToolbar), GTK_STOCK_QUIT, G_CALLBACK(gtk_main_quit), NULL);
+	toolbar_item_new(GTK_TOOLBAR(pToolbar), GTK_STOCK_SAVE, G_CALLBACK(map_editor_save), data);
+	toolbar_item_new(GTK_TOOLBAR(pToolbar), GTK_STOCK_SAVE_AS, G_CALLBACK(map_editor_save_as), data);
+	toolbar_item_new(GTK_TOOLBAR(pToolbar), GTK_STOCK_CLOSE, G_CALLBACK(map_editor_close), data);
+	toolbar_item_new(GTK_TOOLBAR(pToolbar), GTK_STOCK_QUIT, G_CALLBACK(map_editor_quit), data);
 
 	return GTK_TOOLBAR(pToolbar);
 }

@@ -51,7 +51,6 @@ GtkWidget* spriteslist_new(gpointer data)
 				strcpy(img, str_split(c, " ")[1]);
 				if(img[ strlen(img) - 1 ] == '\n')
 					img[ strlen(img) - 1 ] = '\0';
-				printf("%s\n", img);
 				pImage = gtk_image_new_from_file(img);
 				pPixBuf = gtk_image_get_pixbuf(GTK_IMAGE(pImage));
 				gtk_list_store_append(pSpriteList, &pIter);

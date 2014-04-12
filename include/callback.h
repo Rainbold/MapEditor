@@ -7,7 +7,7 @@
 #define MAX_SIZE_TAB_X 50*50
 #define MAX_SIZE_TAB_Y 3
 
-#define CELL(x,y,sizeX) (x +  sizeX * y)
+#define CELL(x,y,sizeX) (x+sizeX*y)
 //#define MIN(a,b) ((a) < (b) ? a : b)
 
 struct data
@@ -22,8 +22,12 @@ struct data
 	char** spritesList;
 	GtkWidget* widget;
 	GtkWidget* table;
+	gchar* filename;
 	unsigned char mapSprites[MAX_SIZE_TAB_X];
 };
+
+void data_set_filename(struct data* data, gchar* filename);
+gchar* data_get_filename(struct data* data);
 
 struct data* data_init();
 
@@ -62,6 +66,10 @@ unsigned char* data_get_map_sprites(struct data* data);
 
 void map_editor_new_file(GtkButton* button, gpointer data);
 void map_editor_open_file(GtkButton* button, gpointer data);
+void map_editor_save_as(GtkButton* button, gpointer data);
+void map_editor_save(GtkButton* button, gpointer data);
+void map_editor_close(GtkButton* button, gpointer data);
+void map_editor_quit(GtkButton* button, gpointer data);
 void map_editor_add_tab(GtkNotebook*, const gchar*, char spriteList[MAX_SIZE_TAB_X*MAX_SIZE_TAB_Y][MAX_SIZE], gpointer data);
 void map_editor_replace_sprite(GtkWidget* parent, GdkEventButton* event, gpointer data);
 

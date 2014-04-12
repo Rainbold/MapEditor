@@ -63,7 +63,7 @@ GtkWidget* layout_init(GtkWidget* MainWindow)
 	struct data data;
 		data_set_widget(&data, GTK_WIDGET(pMap));
 		data_set_spriteslst(&data, (char(*)[MAX_SIZE])spriteList);
-		data_set_code(&data, 0x30);
+		data_set_code(&data, 0x00);
 		data_set_x(&data, 12);
 		data_set_y(&data, 12);
 		data_set_up_x(&data, 15);
@@ -71,6 +71,7 @@ GtkWidget* layout_init(GtkWidget* MainWindow)
 		data_set_map_sprites(&data, mapSprites);
 		data_set_save(&data, FALSE);
 		data_set_file(&data, FALSE);
+		data_set_filename(&data, "");
 
 
 	// Table creation
