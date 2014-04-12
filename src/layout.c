@@ -59,7 +59,7 @@ GtkWidget* layout_init(GtkWidget* MainWindow)
 	pMap = map_editor_new(spriteList);
 
 
-	char mapSprites[MAX_SIZE_TAB_X] = "";
+	unsigned char mapSprites[MAX_SIZE_TAB_X] = "";
 	struct data data;
 		data_set_widget(&data, GTK_WIDGET(pMap));
 		data_set_spriteslst(&data, (char(*)[MAX_SIZE])spriteList);

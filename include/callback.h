@@ -8,7 +8,7 @@
 #define MAX_SIZE_TAB_Y 3
 
 #define CELL(x,y,sizeX) (x +  sizeX * y)
-#define MIN(a,b) ((a) < (b) ? a : b)
+//#define MIN(a,b) ((a) < (b) ? a : b)
 
 struct data
 {
@@ -22,7 +22,7 @@ struct data
 	char** spritesList;
 	GtkWidget* widget;
 	GtkWidget* table;
-	char mapSprites[MAX_SIZE_TAB_X];
+	unsigned char mapSprites[MAX_SIZE_TAB_X];
 };
 
 struct data* data_init();
@@ -37,9 +37,9 @@ void data_set_spriteslst(struct data* data, char spritesList[][MAX_SIZE]);
 char** data_get_spriteslst(struct data* data);
 
 void data_set_sprite(struct data* data, char* sprite);
-char* data_get_sprite(char code, char spritesList[][MAX_SIZE]);
+char* data_get_sprite(unsigned char code, char spritesList[][MAX_SIZE]);
 
-void data_set_code(struct data* data, char unsigned);
+void data_set_code(struct data* data, unsigned char);
 unsigned char data_get_code(struct data* data);
 
 void data_set_x(struct data*, int);
@@ -57,8 +57,8 @@ gboolean data_get_file(struct data*);
 void data_set_cell_type(struct data*, char type, int x, int y);
 char data_get_cell_type(struct data*, int x, int y);
 
-void data_set_map_sprites(struct data*, char mapSprites[MAX_SIZE_TAB_X]);
-char* data_get_map_sprites(struct data* data);
+void data_set_map_sprites(struct data*, unsigned char mapSprites[MAX_SIZE_TAB_X]);
+unsigned char* data_get_map_sprites(struct data* data);
 
 void map_editor_new_file(GtkButton* button, gpointer data);
 void map_editor_open_file(GtkButton* button, gpointer data);

@@ -52,7 +52,7 @@ char** data_get_spriteslst(struct data* data)
 	return data->spritesList;
 }
 
-char* data_get_sprite(char code, char spritesList[][MAX_SIZE])
+char* data_get_sprite(unsigned char code, char spritesList[][MAX_SIZE])
 {
 	int i = 0;
 	
@@ -150,7 +150,7 @@ int data_get_up_y(struct data* data)
 	return data->upY;
 }
 
-void data_set_map_sprites(struct data* data, char mapSprites[MAX_SIZE_TAB_X])
+void data_set_map_sprites(struct data* data, unsigned char mapSprites[MAX_SIZE_TAB_X])
 {
 	assert(data);
 	for(int i=0; i<MAX_SIZE_TAB_X; i++)
@@ -159,7 +159,7 @@ void data_set_map_sprites(struct data* data, char mapSprites[MAX_SIZE_TAB_X])
 	}
 }
 
-char* data_get_map_sprites(struct data* data)
+unsigned char* data_get_map_sprites(struct data* data)
 {
 	assert(data);
 	return data->mapSprites;
@@ -410,10 +410,11 @@ void map_editor_replace_sprite(GtkWidget* parent, GdkEventButton* event, gpointe
 	gtk_widget_translate_coordinates(parent, gtk_widget_get_toplevel(parent), 0, 0, &cx, &cy);
 	
 	//data_set_cell_type(data, data_get_code(data), (cx-wx)/40, (cy-wy)/40);
-	char mapS[MAX_SIZE_TAB_X] = ""; 
+	unsigned char mapS[MAX_SIZE_TAB_X] = ""; 
 	for(int i=0; i<MAX_SIZE_TAB_X; i++)
 		mapS[i] = data_get_map_sprites(data)[i];
 	mapS[CELL((cx-wx)/40, (cy-wy)/40, data_get_x(data))] = data_get_code(data);
+	printf("\n%x %x\n", data_get_code(data), mapS[CELL((cx-wx)/40, (cy-wy)/40, data_get_x(data))]);
 	data_set_map_sprites(data, mapS);
 
 	if(!data_get_save(data)) {
@@ -463,7 +464,7 @@ void map_editor_change_size(GtkButton* button, gpointer data)
 	GtkWidget* pAlignment = NULL;
 	GtkWidget* pEventBox = NULL;
 	gchar* img;
-	char mapS[MAX_SIZE_TAB_X] = ""; 
+	unsigned char mapS[MAX_SIZE_TAB_X] = ""; 
 
 	if(data_get_file(data))
 	{

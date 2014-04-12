@@ -5,17 +5,22 @@
 unsigned char strToHex(const char * s) 
 {
 	unsigned char result = 0;
-	int c;
+	char c;
+   char* sOr = s;
+   int i=2;
  	
  	if ('0' == *s && 'x' == *(s+1)) { 
- 		s+=2;
-  		while (*s) {
-  			result = result << 4;
-   			if (c=(*s-'0'),(c>=0 && c <=9)) result|=c;
-		   	else if (c=(*s-'A'),(c>=0 && c <=5)) result|=(c+10);
-		   	else if (c=(*s-'a'),(c>=0 && c <=5)) result|=(c+10);
-		   	else break;
+      printf("%s\n", s);
+      s+=2;
+      while (*s && i<=4){
+         result = result << 4;
+            if (c=(*s-'0'),(c>=0 && c <=9)) result|=c;
+            else if (c=(*s-'A'),(c>=0 && c <=5)) result|=(c+10);
+            else if (c=(*s-'a'),(c>=0 && c <=5)) result|=(c+10);
+            else break;
+            printf("%d %c\n", c, *s);
 		   	++s;
+            i++;
   		}
  	}
 
@@ -129,8 +134,8 @@ void map_resize_var(struct data* data, int x, int y, int xn, int yn)
 {
    int i, j;
 
-   char mapSpritesNew[MAX_SIZE_TAB_X] = "";
-   char mapSprites[MAX_SIZE_TAB_X] = ""; 
+   unsigned char mapSpritesNew[MAX_SIZE_TAB_X] = "";
+   unsigned char mapSprites[MAX_SIZE_TAB_X] = ""; 
    // for(int i=0; i<MAX_SIZE_TAB_X; i++)
    //    printf("%02x ", data_get_map_sprites(data)[i]);
    for(i=0; i<x; i++)
