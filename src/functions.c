@@ -22,6 +22,7 @@ unsigned char strToHex(const char * s)
  	return result;
 }
 
+// Splits a string in an array of string in function of a separator
 char **str_split (char *s, const char *ct)
 {
    char **tab = NULL;
@@ -60,6 +61,7 @@ char **str_split (char *s, const char *ct)
    return tab;
 }
 
+// Checks if the map is valid
 int map_is_valid_file(const gchar* mapFile)
 {
    FILE* f = NULL;
@@ -125,6 +127,7 @@ unsigned char* map_read_file(const gchar* mapFile, int* sizeX, int* sizeY)
 	return map;
 }
 
+// Not fully fonctionnal; abandonned idea
 void map_resize_var(struct data* data, int x, int y, int xn, int yn)
 {
    int i, j;

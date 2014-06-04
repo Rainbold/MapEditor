@@ -1,1 +1,1 @@
-.obj/menu.o: src/menu.c include/menu.h
+.obj/menu.o: src/menu.c include/menu.h include/callback.h

@@ -47,7 +47,7 @@ GtkWidget* layout_init(GtkWidget* MainWindow)
 
 	// Main window creation
 	MainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	g_signal_connect(G_OBJECT(MainWindow), "delete-event", G_CALLBACK(gtk_main_quit), NULL);
+	g_signal_connect(G_OBJECT(MainWindow), "delete-event", G_CALLBACK(map_editor_quit), NULL);
 	gtk_window_set_title(GTK_WINDOW(MainWindow), "Map Editor");
 	gtk_window_set_default_size(GTK_WINDOW(MainWindow), 800, 600);
 	gtk_widget_set_size_request(MainWindow, 400, 400);

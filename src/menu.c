@@ -22,8 +22,8 @@ GtkMenuBar* menu_new(gpointer userData)
 
 	pMenuFile = gtk_menu_new();
 	pMenuItemFile = gtk_menu_item_new_with_mnemonic("_?");
-		menu_item_new(GTK_MENU(pMenuFile), "_Help", G_CALLBACK(gtk_main_quit), userData);
-		menu_item_new(GTK_MENU(pMenuFile), "_About", G_CALLBACK(gtk_main_quit), userData);
+		menu_item_new(GTK_MENU(pMenuFile), "_Help", G_CALLBACK(NULL), userData);
+		menu_item_new(GTK_MENU(pMenuFile), "_About", G_CALLBACK(NULL), userData);
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(pMenuItemFile), pMenuFile);
 	gtk_menu_shell_append(GTK_MENU_SHELL(pMenuBar), pMenuItemFile);
 

@@ -2,6 +2,7 @@
 #include <functions.h>
 #include <assert.h>
 
+// Data initialization
 struct data* data_init()
 {
 	struct data* data = malloc(sizeof(struct data*));
@@ -182,12 +183,6 @@ void data_set_cell_type(struct data* data, char type, int x, int y)
 	data->mapSprites[ CELL(x,y,data->x) ] = type;
 }
 
-// char data_get_cell_type(struct data* data, int x, int y)
-// {
-// 	assert(data);
-// 	return data->mapSprites[ CELL(x,y,data->x) ];
-// }
-
 void map_editor_new_file(GtkButton* button, gpointer data)
 {
 	GtkWidget* pTable = NULL;
@@ -197,51 +192,42 @@ void map_editor_new_file(GtkButton* button, gpointer data)
 	gchar* img;
 	int cancel = 0;
 
-	if(data_get_save(data)) {
+	// If the current file is not saved
+	if(data_get_save(data))
+	{
+		GtkWidget* pBox;
+		GtkWidget* pLabel = NULL;
 
-		if(data_get_save(data))
-		{
-			GtkWidget* pBox;
-			GtkWidget* pLabel = NULL;
-			GtkWidget* pButtonClose = NULL;
-			GtkWidget* pButtonSave = NULL;
-			GtkWidget* pButtonCancel = NULL;
-			 
-		    /* Création de la boite de dialogue */
-		    /* 1 bouton Valider */
-		    /* 1 bouton Annuler */
-		    pBox = gtk_dialog_new_with_buttons("Unsaved file",
-		        GTK_WINDOW(gtk_widget_get_toplevel( data_get_widget(data) )),
-		        GTK_DIALOG_MODAL,
-		        GTK_STOCK_CLOSE,GTK_RESPONSE_CLOSE,
-		        GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
-		        GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
-		        NULL);
-		 
-		    pLabel = gtk_label_new("Save changes to current file before closing ?");
+		// Dialog creation
+	    pBox = gtk_dialog_new_with_buttons("Unsaved file",
+	        GTK_WINDOW(gtk_widget_get_toplevel( data_get_widget(data) )),
+	        GTK_DIALOG_MODAL,
+	        GTK_STOCK_CLOSE,GTK_RESPONSE_CLOSE,
+	        GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
+	        GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+	        NULL);
+	 
+	    pLabel = gtk_label_new("Save changes to current file before closing ?");
 
-		    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(pBox)->vbox), pLabel, TRUE, FALSE, 1.0);
-		 
-		    /* Affichage des éléments de la boite de dialogue */
-		    gtk_widget_show_all(GTK_DIALOG(pBox)->vbox);
-		    switch (gtk_dialog_run(GTK_DIALOG(pBox)))
-		    {
-		        /* L utilisateur valide */
-		        case GTK_RESPONSE_CANCEL:
-		        	cancel = 1;
-		        	break;
-		        case GTK_RESPONSE_ACCEPT:
-		        	map_editor_save(button, data);
-		        case GTK_RESPONSE_CLOSE:
-		        	cancel = 0;
-		        	break;
-		        case GTK_RESPONSE_NONE:
-		        default:
-		            break;
-		    }
+	    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(pBox)->vbox), pLabel, TRUE, FALSE, 1.0);
+	 
+	    gtk_widget_show_all(GTK_DIALOG(pBox)->vbox);
+	    switch (gtk_dialog_run(GTK_DIALOG(pBox)))
+	    {
+	        case GTK_RESPONSE_CANCEL:
+	        	cancel = 1;
+	        	break;
+	        case GTK_RESPONSE_ACCEPT:
+	        	map_editor_save(button, data);
+	        case GTK_RESPONSE_CLOSE:
+	        	cancel = 0;
+	        	break;
+	        case GTK_RESPONSE_NONE:
+	        default:
+	            break;
+	    }
 
-			gtk_widget_destroy(pBox);
-		}
+		gtk_widget_destroy(pBox);
 	}
 
 	if(!cancel) {
@@ -255,18 +241,15 @@ void map_editor_new_file(GtkButton* button, gpointer data)
 		GtkWidget* pSpinButtonY = NULL;
 		GtkWidget* pLabelX = NULL;
 		GtkWidget* pLabelY = NULL;
-	 
-	    /* Création de la boite de dialogue */
-	    /* 1 bouton Valider */
-	    /* 1 bouton Annuler */
-	    pBoite = gtk_dialog_new_with_buttons("Saisie du nom",
+
+		// Dialog used to select the map size
+	    pBoite = gtk_dialog_new_with_buttons("Map size",
 	        GTK_WINDOW(gtk_widget_get_toplevel( data_get_widget(data) )),
 	        GTK_DIALOG_MODAL,
 	        GTK_STOCK_OK,GTK_RESPONSE_OK,
 	        GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
 	        NULL);
 	 
-	    /* Création de la zone de saisie */
 	    spinnerAdjX = (GtkAdjustment*) gtk_adjustment_new(12.0, 0.0, 50.0, 1.0, 5.0, 5.0);
 			pSpinButtonX = gtk_spin_button_new(spinnerAdjX, 1.0, 0);
 		spinnerAdjY = (GtkAdjustment*) gtk_adjustment_new(12.0, 0.0, 50.0, 1.0, 5.0, 5.0);
@@ -280,19 +263,18 @@ void map_editor_new_file(GtkButton* button, gpointer data)
 	    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(pBoite)->vbox), pLabelY, TRUE, FALSE, 1.0);
 	    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(pBoite)->vbox), pSpinButtonY, TRUE, FALSE, 1.0);
 	 
-	    /* Affichage des éléments de la boite de dialogue */
+	 	// The dialog windows and its elements are displayed
 	    gtk_widget_show_all(GTK_DIALOG(pBoite)->vbox);
 
 
-		/* On lance la boite de dialogue et on récupéré la réponse */
 	    switch (gtk_dialog_run(GTK_DIALOG(pBoite)))
 	    {
-	        /* L utilisateur valide */
+	    	// If the ok button is pressed
 	        case GTK_RESPONSE_OK:
 	        	data_set_file(data, TRUE);
 
-	        	sizeX = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(pSpinButtonX));
-	        	sizeY = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(pSpinButtonY));
+	        	sizeX = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(pSpinButtonY));
+	        	sizeY = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(pSpinButtonX));
 
 				data_set_save(data, FALSE);
 				data_set_filename(data, "");
@@ -300,15 +282,18 @@ void map_editor_new_file(GtkButton* button, gpointer data)
 	        	data_set_x(data, sizeX);
 	        	data_set_y(data, sizeY);
 	        	
+	        	// Initialization of the map variable containing the hex values
 	        	unsigned char mapS[MAX_SIZE_TAB_X] = "";
 	        	for(int i=0; i<MAX_SIZE_TAB_X; i++)
 					mapS[i] = 0x00;
 				data_set_map_sprites(data, mapS);
-
+				
+				// Set the window title				
 	        	gtk_window_set_title(GTK_WINDOW(gtk_widget_get_toplevel( data_get_widget(data) )), "Map Editor - Untitled Map");
 	    
 					pAlignment = gtk_alignment_new(0.5, 0.5, 0, 0);
 					pTable = gtk_table_new(sizeX, sizeY, TRUE);
+					// The window is filled with white images to which event boxes are attached
 					for(int i=0; i<sizeY; i++)
 					{
 						for(int j=0; j<sizeX; j++)
@@ -329,6 +314,7 @@ void map_editor_new_file(GtkButton* button, gpointer data)
 
 				GList *children, *iter;
 
+				// If there was a previous map loaded, it is removed from the view
 				children = gtk_container_get_children(GTK_CONTAINER(data_get_widget(data)));
 				for(iter = children; iter != NULL; iter = g_list_next(iter))
 					gtk_widget_destroy(GTK_WIDGET(iter->data));
@@ -339,14 +325,12 @@ void map_editor_new_file(GtkButton* button, gpointer data)
 				gtk_widget_show(pTable);
 				gtk_widget_show(pAlignment);
 	            break;
-	        /* L utilisateur annule */
 	        case GTK_RESPONSE_CANCEL:
 	        case GTK_RESPONSE_NONE:
 	        default:
 	            break;
 	    }
 	 
-	    /* Destruction de la boite de dialogue */
 	    gtk_widget_destroy(pBoite);
 	}
 }
@@ -365,6 +349,7 @@ void map_editor_open_file_aux(GtkNotebook* pNotebookMap, const gchar* f, char sp
 	unsigned char* map = map_read_file(f, &sizeX, &sizeY);
 	data_set_map_sprites(data, map);
 
+	// Map title
 	const int len = strlen( "Map Editor - " );
 	char* title = malloc(sizeof(char)*(len+strlen(f)+1));
 	strcpy( title, "Map Editor - ");
@@ -373,6 +358,8 @@ void map_editor_open_file_aux(GtkNotebook* pNotebookMap, const gchar* f, char sp
 
 		pAlignment = gtk_alignment_new(0.5, 0.5, 0, 0);
 		pTable = gtk_table_new(sizeX, sizeY, TRUE);
+
+		// All the images are displayed depending on the array containing all the hex values
 		for(int i=0; i<sizeY; i++)
 		{
 			for(int j=0; j<sizeX; j++)
@@ -421,50 +408,40 @@ void map_editor_open_file(GtkButton* button, gpointer data)
 	GtkWidget *pDialog = NULL;
 	int cancel = 0;
 
-	if(data_get_save(data)) {
-		if(data_get_save(data))
-		{
-			GtkWidget* pBox;
-			GtkWidget* pLabel = NULL;
-			GtkWidget* pButtonClose = NULL;
-			GtkWidget* pButtonSave = NULL;
-			GtkWidget* pButtonCancel = NULL;
-			 
-		    /* Création de la boite de dialogue */
-		    /* 1 bouton Valider */
-		    /* 1 bouton Annuler */
-		    pBox = gtk_dialog_new_with_buttons("Unsaved file",
-		        GTK_WINDOW(gtk_widget_get_toplevel( data_get_widget(data) )),
-		        GTK_DIALOG_MODAL,
-		        GTK_STOCK_OPEN,GTK_RESPONSE_CLOSE,
-		        GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
-		        GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
-		        NULL);
-		 
-		    pLabel = gtk_label_new("Save changes to current file before closing ?");
+	if(data_get_save(data))
+	{
+		GtkWidget* pBox;
+		GtkWidget* pLabel = NULL;
 
-		    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(pBox)->vbox), pLabel, TRUE, FALSE, 1.0);
-		 
-		    /* Affichage des éléments de la boite de dialogue */
-		    gtk_widget_show_all(GTK_DIALOG(pBox)->vbox);
-		    switch (gtk_dialog_run(GTK_DIALOG(pBox)))
-		    {
-		        /* L utilisateur valide */
-		        case GTK_RESPONSE_CANCEL:
-		        	cancel = 1;
-		        	break;
-		        case GTK_RESPONSE_ACCEPT:
-		        	map_editor_save(button, data);
-		        case GTK_RESPONSE_CLOSE:
-		        	cancel = 0;
-		        	break;
-		        case GTK_RESPONSE_NONE:
-		        default:
-		            break;
-		    }
+	    pBox = gtk_dialog_new_with_buttons("Unsaved file",
+	        GTK_WINDOW(gtk_widget_get_toplevel( data_get_widget(data) )),
+	        GTK_DIALOG_MODAL,
+	        GTK_STOCK_OPEN,GTK_RESPONSE_CLOSE,
+	        GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
+	        GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+	        NULL);
+	 
+	    pLabel = gtk_label_new("Save changes to current file before closing ?");
 
-			gtk_widget_destroy(pBox);
-		}
+	    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(pBox)->vbox), pLabel, TRUE, FALSE, 1.0);
+	 
+	    gtk_widget_show_all(GTK_DIALOG(pBox)->vbox);
+	    switch (gtk_dialog_run(GTK_DIALOG(pBox)))
+	    {
+	        case GTK_RESPONSE_CANCEL:
+	        	cancel = 1;
+	        	break;
+	        case GTK_RESPONSE_ACCEPT:
+	        	map_editor_save(button, data);
+	        case GTK_RESPONSE_CLOSE:
+	        	cancel = 0;
+	        	break;
+	        case GTK_RESPONSE_NONE:
+	        default:
+	            break;
+	    }
+
+		gtk_widget_destroy(pBox);
 	}
 
 	if(!cancel) {
@@ -474,7 +451,6 @@ void map_editor_open_file(GtkButton* button, gpointer data)
 	  	if (gtk_dialog_run(GTK_DIALOG (pDialog)) == GTK_RESPONSE_ACCEPT)
 	  	{
 	  		gchar* fileName = NULL;
-	  		// GtkWidget* toplevel = gtk_widget_get_toplevel(GTK_WIDGET(button));
 	  		GtkWidget* pErrorMessage = NULL;
 
 		    fileName = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (pDialog));
@@ -492,7 +468,6 @@ void map_editor_open_file(GtkButton* button, gpointer data)
 				gtk_widget_destroy (pErrorMessage);
 	  		}
 	  		
-		    //g_free (fileName), fileName = NULL;
 	  		gtk_widget_destroy (pDialog);
 
 	  	}
@@ -506,6 +481,7 @@ void map_editor_open_file(GtkButton* button, gpointer data)
 
 void map_editor_save_as(GtkButton* button, gpointer data)
 {
+	// If there's a file loaded or unsaved
 	if(data_get_file(data) || data_get_save(data))
 	{
 		GtkWidget *p_dialog = NULL;
@@ -611,13 +587,7 @@ void map_editor_close(GtkButton* button, gpointer data)
 		{
 			GtkWidget* pBox;
 			GtkWidget* pLabel = NULL;
-			GtkWidget* pButtonClose = NULL;
-			GtkWidget* pButtonSave = NULL;
-			GtkWidget* pButtonCancel = NULL;
 			 
-		    /* Création de la boite de dialogue */
-		    /* 1 bouton Valider */
-		    /* 1 bouton Annuler */
 		    pBox = gtk_dialog_new_with_buttons("Unsaved file",
 		        GTK_WINDOW(gtk_widget_get_toplevel( data_get_widget(data) )),
 		        GTK_DIALOG_MODAL,
@@ -630,11 +600,9 @@ void map_editor_close(GtkButton* button, gpointer data)
 
 		    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(pBox)->vbox), pLabel, TRUE, FALSE, 1.0);
 		 
-		    /* Affichage des éléments de la boite de dialogue */
 		    gtk_widget_show_all(GTK_DIALOG(pBox)->vbox);
 		    switch (gtk_dialog_run(GTK_DIALOG(pBox)))
 		    {
-		        /* L utilisateur valide */
 		        case GTK_RESPONSE_CANCEL:
 		        	cancel = 1;
 		        	break;
@@ -676,20 +644,13 @@ void map_editor_close(GtkButton* button, gpointer data)
 
 void map_editor_quit(GtkButton* button, gpointer data)
 {
-	GList *children, *iter;
 	int cancel = 0;
 
 	if(data_get_save(data))
 	{
 		GtkWidget* pBox;
 		GtkWidget* pLabel = NULL;
-		GtkWidget* pButtonClose = NULL;
-		GtkWidget* pButtonSave = NULL;
-		GtkWidget* pButtonCancel = NULL;
 		 
-	    /* Création de la boite de dialogue */
-	    /* 1 bouton Valider */
-	    /* 1 bouton Annuler */
 	    pBox = gtk_dialog_new_with_buttons("Unsaved file",
 	        GTK_WINDOW(gtk_widget_get_toplevel( data_get_widget(data) )),
 	        GTK_DIALOG_MODAL,
@@ -702,11 +663,9 @@ void map_editor_quit(GtkButton* button, gpointer data)
 
 	    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(pBox)->vbox), pLabel, TRUE, FALSE, 1.0);
 	 
-	    /* Affichage des éléments de la boite de dialogue */
 	    gtk_widget_show_all(GTK_DIALOG(pBox)->vbox);
 	    switch (gtk_dialog_run(GTK_DIALOG(pBox)))
 	    {
-	        /* L utilisateur valide */
 	        case GTK_RESPONSE_CANCEL:
 	        	cancel = 1;
 	        	break;
@@ -730,6 +689,7 @@ void map_editor_quit(GtkButton* button, gpointer data)
 
 }
 
+// Function used to replace the sprite when a event box is clicked
 void map_editor_replace_sprite(GtkWidget* parent, GdkEventButton* event, gpointer data)
 {	
 	GtkWidget* pImage = NULL;
@@ -789,6 +749,7 @@ void map_editor_change_size_y(GtkSpinButton* spinButton, gpointer data)
 	data_set_up_y(data, (int)gtk_spin_button_get_value(spinButton));
 }
 
+// Not fully fonctionnal; abandonned idea
 void map_editor_change_size(GtkButton* button, gpointer data)
 {
 	assert(data);
@@ -801,7 +762,6 @@ void map_editor_change_size(GtkButton* button, gpointer data)
 	GtkWidget* pAlignment = NULL;
 	GtkWidget* pEventBox = NULL;
 	gchar* img;
-	unsigned char mapS[MAX_SIZE_TAB_X] = ""; 
 
 	if(data_get_file(data))
 	{
@@ -855,6 +815,7 @@ void map_editor_change_size(GtkButton* button, gpointer data)
 	}
 }
 
+// Changes the current sprite selected by the user
 void spriteslst_change_sprite(GtkTreeView *treeView, gpointer data)
 {
 	GtkTreePath* path[MAX_SIZE_TAB_X];
