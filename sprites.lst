@@ -2,24 +2,73 @@
 
 Empty ./images/empty.png 0x00
 
-- Player
-Bomberman ./images/player_down.png 0x03
-Bomberwoman ./images/bomberwoman.png 0x0A
-
 - Scenery
 Stone ./images/stone.png 0x02
 Tree ./images/tree.png 0x12
+Wall_b ./images/wall_b.png 0x22
+Wall_g ./images/wall_g.png 0x32
+Wall_h ./images/wall_h.png 0x42
+Wall_d ./images/wall_d.png 0x52
+Angle_bg ./images/angle_bg.png 0x62
+Angle_bd ./images/angle_bd.png 0x72
+Angle_hg ./images/angle_hg.png 0x82
+Angle_hd ./images/angle_hd.png 0x92
+Bloc ./images/bloc.png 0xA2
 
-- Monstres
-Monster1 ./images/monster_down.png 0x06
+- Cases
+Case_empty ./images/wood_box.png 0x04
+Case_range+ ./images/wood_box.png 0x14
+Case_range- ./images/wood_box.png 0x24
+Case_bomb+ ./images/wood_box.png 0x34
+Case_bomb- ./images/wood_box.png 0x44
+Case_life ./images/wood_box.png 0x54
+Case_roller ./images/wood_box.png 0x64
+Case_monster ./images/wood_box.png 0x74
+Case_alien1 ./images/wood_box.png 0x84
+Case_alien2 ./images/wood_box.png 0x94
+Case_alien3 ./images/wood_box.png 0xA4
+Case_alien4 ./images/wood_box.png 0xB4
+
+- Bonus
+Bonus_range+ ./images/bonus_bomb_range_inc.png 0x15
+Bonus_range- ./images/bonus_bomb_range_dec.png 0x25
+Bonus_bomb+ ./images/bonus_bomb_nb_inc.png 0x35
+Bonus_bomb- ./images/bonus_bomb_nb_dec.png 0x45
+Bonus_life- ./images/banner_life.png 0x55
+Bonus_roller ./images/roller.png 0x65
+
+- Doors
+O_Door_0 ./images/closed_door.png 0x89
+O_Door_1 ./images/closed_door.png 0x99
+O_Door_2 ./images/closed_door.png 0xA9
+O_Door_3 ./images/closed_door.png 0xB9
+O_Door_4 ./images/closed_door.png 0xC9
+O_Door_5 ./images/closed_door.png 0xD9
+C_Door_0 ./images/door.png 0x09
+C_Door_1 ./images/door.png 0x19
+C_Door_2 ./images/door.png 0x29
+C_Door_3 ./images/door.png 0x39
+C_Door_4 ./images/door.png 0x49
+C_Door_5 ./images/door.png 0x59
+
+- Monsters
+Monster ./images/monster_down.png 0x06
+Alien1 ./images/alien1_40.png 0x16
+Alien2 ./images/alien2_40.png 0x26
+Alien3 ./images/alien3_40.png 0x36
+Alien4 ./images/alien4_40.png 0x46
+
+- Players
+Player1 ./images/player_down.png 0x03
+Player2 ./images/player_down.png 0x13
+Player3 ./images/player_down.png 0x23
+Player4 ./images/player_down.png 0x33
 
 - Objects
 Key ./images/key.png 0x08
-Door ./images/closed_door.png 0x09
-Flag ./images/flag.png 0x01
 
-- Bonus
-RangeInc ./images/bonus_bomb_range_inc.png 0x05
-RangeDec ./images/bonus_bomb_range_dec.png 0x15
-BombInc ./images/bonus_bomb_nb_inc.png 0x25
-BombDec ./images/bonus_bomb_nb_dec.png 0x35
+Flag ./images/flag.png 0x01
+Bomberwoman ./images/bomberwoman.png 0x11
+
+
+
