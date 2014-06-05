@@ -348,6 +348,8 @@ void map_editor_open_file_aux(GtkNotebook* pNotebookMap, const gchar* f, char sp
 
 	unsigned char* map = map_read_file(f, &sizeX, &sizeY);
 	data_set_map_sprites(data, map);
+	data_set_x(data, sizeX);
+	data_set_y(data, sizeY);
 
 	// Map title
 	const int len = strlen( "Map Editor - " );
