@@ -370,7 +370,7 @@ void map_editor_open_file_aux(GtkNotebook* pNotebookMap, const gchar* f, char sp
 				{
 					if(!strcmp(spriteList[CELL(k, 0, MAX_SIZE_TAB_X)], ""))
 						break;
-					if( map[CELL(i,j,sizeX)] == strToHex(spriteList[CELL(k, 2, MAX_SIZE_TAB_X)]) )
+					if( map[CELL(j,i,sizeX)] == strToHex(spriteList[CELL(k, 2, MAX_SIZE_TAB_X)]) )
 					{
 						img = spriteList[CELL(k, 1, MAX_SIZE_TAB_X)];
 						break;
@@ -384,7 +384,7 @@ void map_editor_open_file_aux(GtkNotebook* pNotebookMap, const gchar* f, char sp
 					gtk_widget_show(pEventBox);
 					gtk_widget_set_events (pEventBox, GDK_BUTTON_PRESS_MASK);
     				g_signal_connect (pEventBox, "button_press_event", G_CALLBACK(map_editor_replace_sprite), data);
-					gtk_table_attach( GTK_TABLE(pTable), pEventBox, i, i+1, j, j+1, FALSE, FALSE, 0, 0);
+					gtk_table_attach( GTK_TABLE(pTable), pEventBox, j, j+1, i, i+1, FALSE, FALSE, 0, 0);
 			}
 		}
 		gtk_container_add(GTK_CONTAINER(pAlignment), pTable);
