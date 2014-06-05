@@ -273,8 +273,8 @@ void map_editor_new_file(GtkButton* button, gpointer data)
 	        case GTK_RESPONSE_OK:
 	        	data_set_file(data, TRUE);
 
-	        	sizeX = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(pSpinButtonY));
-	        	sizeY = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(pSpinButtonX));
+	        	sizeX = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(pSpinButtonX));
+	        	sizeY = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(pSpinButtonY));
 
 				data_set_save(data, FALSE);
 				data_set_filename(data, "");
@@ -306,7 +306,7 @@ void map_editor_new_file(GtkButton* button, gpointer data)
 								gtk_widget_show(pEventBox);
 								gtk_widget_set_events (pEventBox, GDK_BUTTON_PRESS_MASK);
 			    				g_signal_connect (pEventBox, "button_press_event", G_CALLBACK(map_editor_replace_sprite), data);
-								gtk_table_attach( GTK_TABLE(pTable), pEventBox, i, i+1, j, j+1, FALSE, FALSE, 0, 0);
+								gtk_table_attach( GTK_TABLE(pTable), pEventBox, j, j+1, i, i+1, FALSE, FALSE, 0, 0);
 						}
 					}
 					gtk_container_add(GTK_CONTAINER(pAlignment), pTable);

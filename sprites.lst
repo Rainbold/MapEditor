@@ -3,23 +3,23 @@
 Empty ./images/empty.png 0x00
 
 - Player
-Bomberman ./images/player_down.png 0x30
-Bomberwoman ./images/bomberwoman.png 0xA0
+Bomberman ./images/player_down.png 0x03
+Bomberwoman ./images/bomberwoman.png 0x0A
 
 - Scenery
-Stone ./images/stone.png 0x20
-Tree ./images/tree.png 0x21
+Stone ./images/stone.png 0x02
+Tree ./images/tree.png 0x12
 
 - Monstres
-Monster1 ./images/monster_down.png 0x60
+Monster1 ./images/monster_down.png 0x06
 
 - Objects
-Key ./images/key.png 0x80
-Door ./images/closed_door.png 0x90
-Flag ./images/flag.png 0x10
+Key ./images/key.png 0x08
+Door ./images/closed_door.png 0x09
+Flag ./images/flag.png 0x01
 
 - Bonus
-RangeInc ./images/bonus_bomb_range_inc.png 0x50
-RangeDec ./images/bonus_bomb_range_dec.png 0x51
-BombInc ./images/bonus_bomb_nb_inc.png 0x52
-BombDec ./images/bonus_bomb_nb_dec.png 0x53
+RangeInc ./images/bonus_bomb_range_inc.png 0x05
+RangeDec ./images/bonus_bomb_range_dec.png 0x15
+BombInc ./images/bonus_bomb_nb_inc.png 0x25
+BombDec ./images/bonus_bomb_nb_dec.png 0x35
